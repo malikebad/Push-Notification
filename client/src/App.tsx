@@ -76,17 +76,21 @@ function AuthenticatedLayout() {
   );
 }
 
-export default function App() {
+function AppContent() {
   const { isAuthenticated, isLoading } = useAuth();
 
+  if (isLoading || !isAuthenticated) {
+    return <Router />;
+  }
+
+  return <AuthenticatedLayout />;
+}
+
+export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        {isLoading || !isAuthenticated ? (
-          <Router />
-        ) : (
-          <AuthenticatedLayout />
-        )}
+        <AppContent />
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>
